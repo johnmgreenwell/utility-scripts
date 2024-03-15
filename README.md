@@ -4,7 +4,7 @@ Miscellaneous scripts for reference
 
 ## Overview
 
-This repo provides a collection utility scripts with potential use, even for reference.
+This repo provides a collection of potentially useful scripts.
 
 ## License
 

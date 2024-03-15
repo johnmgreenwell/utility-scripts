@@ -8,17 +8,27 @@ else
   sudo apt install samba -y
 fi
 
-# Rename to target shared directory
 sudo mkdir -p /mnt/hdd1/shared
 
-echo "Updating smb.conf file with custom settings."
+echo "Updating smb.conf file with custom settings..."
 sudo cat >> /etc/samba/smb.conf <<- EOM
 # Place custom server details here
 # https://ubuntu.com/tutorials/install-and-configure-samba#3-setting-up-samba
 EOM
 
-# Replace with target device/directory
-sudo mount /dev/sda1 /mnt/hdd1
+# Custom device and mount location here
+STARTUP="sudo mount /dev/sda1 /mnt/hdd1"
+
+echo "Adding auto-mount on start..."
+if [ ! -f /etc/rc.local ]; then
+  sudo echo "#!/bin/bash" > /etc/rc.local
+  sudo chmod +x /etc/rc.local
+else
+  sudo echo $STARTUP >> /etc/rc.local
+fi
+
+eval $STARTUP
+
 sudo systemctl restart smbd.service nmbd.service
 
 exit 0
