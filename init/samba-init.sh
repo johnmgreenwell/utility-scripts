@@ -23,11 +23,10 @@ echo "Adding auto-mount on start..."
 if [ ! -f /etc/rc.local ]; then
   sudo echo "#!/bin/bash" > /etc/rc.local
   sudo chmod +x /etc/rc.local
-else
-  sudo echo $STARTUP >> /etc/rc.local
 fi
 
-eval $STARTUP
+sudo echo "$STARTUP" >> /etc/rc.local
+eval "$STARTUP"
 
 sudo systemctl restart smbd.service nmbd.service
 

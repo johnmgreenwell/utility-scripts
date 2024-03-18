@@ -21,17 +21,27 @@ dbus-launch --exit-with-session gnome-session
 
 EOM
 
-STARTUP="tigervncserver -xstartup /usr/bin/gnome-session -geometry 1920x1080 -localhost no"
+cat > /etc/systemd/system/vncserver.service <<- EOM
+[Unit]
+Description=Remote desktop service (VNC)
+After=syslog.target network.target
+
+[Service]
+Type=simple
+User=jgreenw
+PAMName=jgreenw
+PIDFile=/home/jgreenw/.vnc/%H%i.pid
+ExecStart=/usr/bin/tigervncserver -xstartup /usr/bin/gnome-session -geometry 1920x1080 -localhost no
+ExecStop=/usr/bin/vncserver -kill :%i
+
+[Install]
+WantedBy=multi-user.target
+EOM
 
 echo "Adding auto-mount on start..."
-if [ ! -f /etc/rc.local ]; then
-  sudo echo "#!/bin/bash" > /etc/rc.local
-  sudo chmod +x /etc/rc.local
-else
-  sudo echo $STARTUP >> /etc/rc.local
-fi
 
-eval $STARTUP
+sudo systemctl enable vncserver.service
+sudo systemctl daemon-reload 
 
 exit 0
 
