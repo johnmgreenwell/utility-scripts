@@ -2,7 +2,7 @@
 # Install and prepare tmux conf file
 
 # Anticipate that this script is likely to be run on a fresh OS
-# and install git and tmux if they are not already present.
+# and install git as well if not already present.
 if which git >/dev/null 2>&2; then
   echo "Git is already installed."
 else

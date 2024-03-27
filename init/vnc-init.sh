@@ -1,5 +1,5 @@
 #!/bin/bash
-# Install and prepare VNC 
+# Install and prepare VNC configuration and auto-start
 
 if which tigervncserver >/dev/null 2>&1; then
   echo "VNC server is already installed."

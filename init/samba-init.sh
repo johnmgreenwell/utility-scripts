@@ -1,4 +1,5 @@
 #!/bin/bash
+# Install smba server and prepare its configuration and auto-start
 
 if which samba >/dev/null 2>&2; then
   echo "Samba is already installed."
