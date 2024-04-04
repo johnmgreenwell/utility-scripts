@@ -43,6 +43,9 @@ echo "Adding auto-mount on start..."
 sudo systemctl enable vncserver.service
 sudo systemctl daemon-reload 
 
+echo "Performing initial launch for password entry..."
+sudo tigervncserver -xstartup /usr/bin/gnome-session -geometry 1920x1080 -localhost no
+
 exit 0
 
 # EOF
