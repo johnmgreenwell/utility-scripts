@@ -21,7 +21,7 @@ dbus-launch --exit-with-session gnome-session
 
 EOM
 
-cat > /etc/systemd/system/vncserver.service <<- EOM
+read -r -d '' SERVICE << EOM
 [Unit]
 Description=Remote desktop service (VNC)
 After=syslog.target network.target
@@ -38,8 +38,9 @@ ExecStop=/usr/bin/vncserver -kill :%i
 WantedBy=multi-user.target
 EOM
 
-echo "Adding auto-mount on start..."
+echo "$SERVICE" | sudo tee '/etc/systemd/system/vncserver.service' > /dev/null
 
+echo "Adding auto-mount on start..."
 sudo systemctl enable vncserver.service
 sudo systemctl daemon-reload 
 
