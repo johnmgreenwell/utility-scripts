@@ -6,7 +6,7 @@ if which xrdp >/dev/null 2>&2; then
 else
   echo "Installing XRDP."
   sudo apt update
-  sudo apt install xrdp
+  sudo apt install xrdp -y
   sudo systemctl enable xrdp
   sudo systemctl start xrdp
   echo "gnome-session" > ~/.xsession
