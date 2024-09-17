@@ -1,5 +1,7 @@
 #!/bin/bash
 # Install smba server and prepare its configuration and auto-start
+# to a directory called 'shared/' in MOUNT_DIRECTORY
+# Usage: ./samba-init.sh <DEVICE_FILE> <MOUNT_DIRECTORY>
 
 DEVICE=${1:-"/dev/sda1"}
 MOUNT=${2:-"/mnt/hdd1"}
