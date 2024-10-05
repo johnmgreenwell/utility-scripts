@@ -14,6 +14,7 @@ else
 fi
 
 if which xrdp >/dev/null 2>&2; then
+  sudo ufw allow 3389
   exit 0
 else
   echo "Failed to install XRDP."
