@@ -1,10 +1,11 @@
 #!/bin/bash
 # Install smba server and prepare its configuration and auto-start
 # to a directory called 'shared/' in MOUNT_DIRECTORY
-# Usage: ./samba-init.sh <DEVICE_FILE> <MOUNT_DIRECTORY>
+# Usage: ./samba-init.sh <DEVICE_FILE> <MOUNT_DIRECTORY> <USERNAME>
 
 DEVICE=${1:-"/dev/sda1"}
 MOUNT=${2:-"/mnt/hdd1"}
+USER=${3:-"pi"}
 
 if which samba >/dev/null 2>&2; then
   echo "Samba is already installed."
@@ -32,6 +33,9 @@ if [ ! -f /etc/rc.local ]; then
   sudo chmod +x /etc/rc.local
 fi
 echo "${STARTUP[@]}" | sudo tee -a '/etc/rc.local' > '/dev/null'
+
+# Setup a user/password to access the samba share
+sudo smbpasswd -a $USER
 
 # Mount the drive and start the server
 "${STARTUP[@]}"
