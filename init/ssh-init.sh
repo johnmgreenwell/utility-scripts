@@ -10,6 +10,7 @@ else
 fi
 
 sudo ufw allow ssh
+sudo ufw allow 1022/tcp comment 'Open port ssh TCP/1022 as failsafe for upgrades'
 sudo systemctl restart ssh
 
 exit 0
