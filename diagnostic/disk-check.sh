@@ -1,9 +1,9 @@
 #!/bin/bash
-# Display disk and partition information
+# Report common disk and partition information
 
 #!/bin/bash
 
-echo "=== Disk and Partition Information ==="
+echo "=== Disk/Partition Information ==="
 lsblk -o NAME,FSTYPE,SIZE,MOUNTPOINT
 
 echo -e "\n=== Detailed Partition Information ==="
@@ -30,7 +30,7 @@ done
 echo -e "\n=== Block Device Information ==="
 blkid
 
-echo -e "\n=== File System Usage by Directory (Top 10) ==="
+echo -e "\n=== File System Usage by Top-Ten Directory ==="
 du -ah / | sort -rh | head -n 10
 
 echo -e "\n=== Mount Points and Options ==="
