@@ -1,9 +1,9 @@
 #!/bin/bash
-# Check if a service is active and restart it if not
+# Check if a service is active and restart it if it is not
 # Usage: task-check.sh <SERVICE_NAME>
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <service_name>"
+    echo "Usage: $0 <NAME_OF_SERVICE_TO_BE_CHECKED>"
     exit 1
 fi
 
@@ -21,3 +21,5 @@ if ! systemctl is-active --quiet "$SERVICE"; then
 else
     echo "$(date): $SERVICE is running." >> /var/log/service_monitor.log
 fi
+
+# EOF
