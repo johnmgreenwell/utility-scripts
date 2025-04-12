@@ -1,0 +1,5 @@
+#!/bin/bash
+
+amixer -D pulse sset Master mute
+
+#EOF
