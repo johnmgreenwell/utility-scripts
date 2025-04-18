@@ -1,4 +1,5 @@
 #!/bin/bash
+# Set audio volume to percentage level
 # Usage: volume-set.sh [VOLUME_PERCENTAGE]
 
 if [ -z "$1" || ]; then
@@ -19,4 +20,4 @@ fi
 
 amixer -D pulse sset Master $1%
 
-#EOF
+# EOF
