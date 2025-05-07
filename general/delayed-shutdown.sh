@@ -2,10 +2,7 @@
 # Shutdown the machine after a set number of minutes
 # Usage: delayed-shutdown.sh [MINUTES]
 
-if [ -z "$1" ]; then
-    echo "Usage: $0 <minutes>"
-    exit 1
-fi
+[ -z "$1" ] && { echo "Usage: $0 <minutes>"; exit 1; }
 
 MINUTES=$1
 
