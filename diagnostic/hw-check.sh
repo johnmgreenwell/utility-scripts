@@ -1,5 +1,6 @@
 #!/bin/bash
 # Report platform hardware info
+# Usage: hw-check.sh
 
 echo "==== SYSTEM HARDWARE INFORMATION ===="
 

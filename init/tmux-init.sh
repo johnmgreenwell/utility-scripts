@@ -1,5 +1,6 @@
 #!/bin/bash
 # Install tmux and prepare tmux conf file
+# Usage: tmux-init.sh
 
 if ! which git >/dev/null 2>&2; then
   echo "Installing git."

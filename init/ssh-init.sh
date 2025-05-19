@@ -1,5 +1,6 @@
 #!/bin/bash
 # Install openssh clinet and server and allow it through the firewall
+# Usage: ssh-init.sh
 
 if which ssh >/dev/null 2>&2; then
   echo "OpenSSH is already installed."

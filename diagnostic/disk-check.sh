@@ -1,5 +1,6 @@
 #!/bin/bash
 # Report common disk and partition information
+# Usage: disk-check.sh
 
 echo "=== Disk/Partition Information ==="
 lsblk -o NAME,FSTYPE,SIZE,MOUNTPOINT

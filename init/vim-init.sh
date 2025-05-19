@@ -1,5 +1,6 @@
 #!/bin/bash
-# Install, clone and copy in new vimrc file to set up vim 
+# Install, clone and copy in new vimrc file to set up vim
+# Usage: vim-init.sh
 
 if ! which git >/dev/null 2>&2; then
   echo "Installing git."

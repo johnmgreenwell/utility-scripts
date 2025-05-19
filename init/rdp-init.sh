@@ -1,5 +1,6 @@
 #!/bin/bash
 # Install and setup xrdp
+# Usage: rdp-init.sh
 
 if which xrdp >/dev/null 2>&2; then
   echo "XRDP is already installed."
