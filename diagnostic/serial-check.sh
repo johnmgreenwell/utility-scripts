@@ -4,6 +4,9 @@
 
 #!/bin/bash
 
+echo "Available USB devices:"
+lsusb
+
 echo "Scanning for serial devices..."
 
 devices=$(ls /dev/ttyUSB* /dev/ttyACM* /dev/ttyS* 2>/dev/null)
