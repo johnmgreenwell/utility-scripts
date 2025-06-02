@@ -1,5 +1,7 @@
 #!/bin/bash
 # Create a new udev rule for a particular peripheral attachment by name
+# Requires bus and device numbers (e.g. via lsusb) of intended peripheral,
+# as well as the intended udev enforced name (e.g. 'camera_1' etc.)
 # Usage: ./create-udev-rule.sh <BUS_NUM> <DEVICE_NUM> <DEVICE_NAME>
 
 [ "$#" -eq 3 ] || { echo "Usage: $0 <BUS_NUM> <DEVICE_NUM> <DEVICE_NAME>"; exit 1; }
@@ -10,13 +12,13 @@ DEVICE_NAME=$3
 
 DEVICE_PATH=$(lsusb -s "$BUS_NUM:$DEVICE_NUM" | awk '{print $6}')
 if [ -z "$DEVICE_PATH" ]; then
-    echo "Device not found."
+    echo "Device $BUS_NUM:$DEVICE_NUM not found."
     exit 1
 fi
 
 SYSFS_PATH=$(find /sys/bus/usb/devices/usb*/ -name "*$DEVICE_PATH")
 if [ -z "$SYSFS_PATH" ]; then
-    echo "Could not locate sysfs path for device."
+    echo "Could not locate sysfs path for device $DEVICE_PATH."
     exit 1
 fi
 
@@ -30,7 +32,7 @@ echo "SUBSYSTEM==\"usb\", ATTR{idVendor}==\"$ID_VENDOR\", ATTR{idProduct}==\"$ID
 echo "Reloading udev rules..."
 sudo udevadm control --reload-rules
 sudo udevadm trigger
-echo "Udev rule added. Your device should now be accessible at /dev/$DEVICE_NAME (if permissions allow)."
+echo "Udev rule added. Device accessible at /dev/$DEVICE_NAME."
 
 if [ -e "/dev/$DEVICE_NAME" ]; then
     echo "/dev/$DEVICE_NAME successfully created!"
