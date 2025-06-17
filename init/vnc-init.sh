@@ -1,6 +1,9 @@
 #!/bin/bash
 # Install and prepare VNC configuration and auto-start
-# Usage: vnc-init.sh
+# The input username is optional, and is used for the systemd unit
+# Usage: vnc-init.sh <USERNAME>
+
+USERNAME=${1:-"root"}
 
 if which tigervncserver >/dev/null 2>&1; then
   echo "VNC server is already installed."
@@ -29,9 +32,9 @@ After=syslog.target network.target
 
 [Service]
 Type=simple
-User=jgreenw
-PAMName=jgreenw
-PIDFile=/home/jgreenw/.vnc/%H%i.pid
+User=$USERNAME
+PAMName=$USERNAME
+PIDFile=/home/$USERNAME/.vnc/%H%i.pid
 ExecStart=/usr/bin/tigervncserver -xstartup /usr/bin/gnome-session -geometry 1920x1080 -localhost no
 ExecStop=/usr/bin/vncserver -kill :%i
 
