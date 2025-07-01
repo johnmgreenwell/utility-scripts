@@ -5,7 +5,7 @@
 #!/bin/bash
 
 echo "Scanning network 192.168.1.0/24..."
-echo "---------------------------------"
+echo ""
 
 for ip in 192.168.1.{1..254}; do
     (
@@ -17,7 +17,7 @@ for ip in 192.168.1.{1..254}; do
 done
 
 wait
-echo "---------------------------------"
+echo ""
 echo "Scan complete."
 
 # EOF
