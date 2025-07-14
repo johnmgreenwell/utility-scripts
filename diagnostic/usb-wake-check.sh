@@ -2,7 +2,7 @@
 # Check which USB devices permit wake on activity
 # Usage: usb-wake-check.sh
 
-print "Checking USB devices for wakeup capability...\r\n"
+printf "Checking USB devices for wakeup capability...\r\n"
 
 for device in /sys/bus/usb/devices/*/power/wakeup; do
     if [[ -f "$device" ]]; then
@@ -12,6 +12,5 @@ for device in /sys/bus/usb/devices/*/power/wakeup; do
         echo "Device: $dev_name - Wakeup: $wake_setting"
     fi
 done
-
 
 # EOF
