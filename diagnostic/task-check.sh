@@ -3,6 +3,12 @@
 # Given no arguments, will list all active systemd services that are running
 # Usage: task-check.sh <SERVICE_NAME>
 
+if [ "$EUID" -ne 0 ]; then
+    echo "This script requires root privileges."
+    echo "Please run with sudo or as root."
+    exit 1
+fi
+
 type systemctl &> /dev/null || { echo "Error: systemctl not found. This script requires systemd."; exit 1; }
 
 if [ -z "$1" ]; then

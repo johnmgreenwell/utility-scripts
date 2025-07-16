@@ -16,10 +16,6 @@ df -i
 
 echo -e "\n=== File System Usage by Type ==="
 findmnt -t ext4,xfs,vfat
-
-echo -e "\n=== Disk Usage for Root Directory ==="
-du -sh /
-
 echo -e "\n=== SMART Status for Disks ==="
 for disk in $(ls /dev/sd? 2>/dev/null); do
     echo -e "\nSMART info for $disk:"
@@ -28,9 +24,6 @@ done
 
 echo -e "\n=== Block Device Information ==="
 blkid
-
-echo -e "\n=== File System Usage by Top-Ten Directory ==="
-du -ah / | sort -rh | head -n 10
 
 echo -e "\n=== Mount Points and Options ==="
 cat /etc/fstab
