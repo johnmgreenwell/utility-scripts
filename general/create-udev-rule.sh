@@ -6,6 +6,12 @@
 
 RULE_FILE="/etc/udev/rules.d/99-custom.rules"
 
+if [ "$EUID" -ne 0 ]; then
+    echo "This script requires root privileges to access some udev rules."
+    echo "Please run with sudo or as root."
+    exit 1
+fi
+
 [ "$#" -eq 3 ] || { echo "Usage: $0 <BUS_NUM> <DEVICE_NUM> <DEVICE_NAME>"; exit 1; }
 
 BUS_NUM=$1
