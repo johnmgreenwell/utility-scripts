@@ -8,7 +8,6 @@ usage() {
   echo "Usage: $0 [SERIAL_DEVICE]"
   echo "Example: $0 /dev/ttyACM0"
   echo "If no device is specified, /dev/ttyACM0 is checked as a default."
-  exit 1
 }
 
 if [ -z "$SERIAL_DEVICE" ]; then
