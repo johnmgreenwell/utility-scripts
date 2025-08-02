@@ -5,6 +5,10 @@
 # EEP_FILE: .eep file to flash
 # CHIP: avrdude abbreviation for target microcontoller
 # PROGRAMMER: avrdude abbreviation for programmer
+# TODO: could benefit from (careful) support of fuse setting
+
+# Default programmer
+PROGRAMMER="atmelice"
 
 help() {
   echo "Usage: $0 [-b BIN_FILE] [-e EEP_FILE] [CHIP] <PROGRAMMER>"
@@ -43,20 +47,19 @@ echo "Beginning operation..."
 
 shift "$((OPTIND-1))"
 [[ -z $1 ]] && { echo "No chip name provided. Exiting..."; exit 1; } || CHIP=$1
-[[ -z $2 ]] && { echo "Default programmer: Atmel ICE" ; PROGRAMMER="atmelice"; } || PROGRAMMER=$2
+[[ -z $2 ]] && { echo "Default programmer: $PROGRAMMER" ; } || PROGRAMMER=$2
 
 
 if $FLASH_BIN ; then
-  echo "Flashing $TARGET_BIN..."
+  echo "Flashing $TARGET_BIN to $CHIP using $PROGRAMMER..."
   echo "avrdude -p $CHIP -c $PROGRAMMER -U flash:w:$TARGET_BIN"
 fi
 if $FLASH_EEP ; then
-  echo "Flashing $TARGET_EEP..."
+  echo "Writing $TARGET_EEP to $CHIP using $PROGRAMMER..."
   echo "avrdude -p $CHIP -c $PROGRAMMER -U eeprom:w:$TARGET_EEP"
 fi
 
 echo "Operation complete. Fuses must be programmed separately."
-
 exit 0
 
 # EOF
