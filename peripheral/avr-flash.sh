@@ -14,7 +14,7 @@ help() {
   echo "  -h            : This help info"
   echo "  -b BIN_FILE   : Flash .bin file"
   echo "  -e EEP_FILE   : Flash .eep file"
-  echo "  -f FUSE_HEX   : Set low, high, extended fuses (e.g., FFDE05)"
+  echo "  -f FUSE_HEX   : Set low -> high -> extended fuses (e.g., FFDE05)"
   echo "         CHIP   : Chip name (avrdude)"
   echo "   PROGRAMMER   : Programmer (avrdude)"
 }
@@ -60,7 +60,7 @@ shift "$((OPTIND-1))"
 # Validate and parse fuses if provided
 if $FLASH_FUSES; then
   if [[ ! $FUSE_HEX =~ ^[0-9A-Fa-f]{6}$ ]]; then
-    echo "Error: FUSE_HEX must be a six-character hex string (e.g., FFDE05)"
+    echo "Error: FUSE_HEX must be a six-character hex string (e.g., FFDE05) of low -> high -> extended fuses in order."
     exit 1
   fi
   LFUSE=${FUSE_HEX:0:2}
@@ -70,15 +70,15 @@ fi
 
 if $FLASH_BIN; then
   echo "Flashing $TARGET_BIN to $CHIP using $PROGRAMMER..."
-  avrdude -p $CHIP -c $PROGRAMMER -U flash:w:$TARGET_BIN || { echo "Flash failed"; exit 1; }
+  avrdude -p $CHIP -c $PROGRAMMER -U flash:w:$TARGET_BIN || { echo "Flashing failed."; exit 1; }
 fi
 if $FLASH_EEP; then
   echo "Writing $TARGET_EEP to $CHIP using $PROGRAMMER..."
-  avrdude -p $CHIP -c $PROGRAMMER -U eeprom:w:$TARGET_EEP || { echo "EEPROM write failed"; exit 1; }
+  avrdude -p $CHIP -c $PROGRAMMER -U eeprom:w:$TARGET_EEP || { echo "EEPROM write failed."; exit 1; }
 fi
 if $FLASH_FUSES; then
   echo "Setting fuses (low=0x$LFUSE, high=0x$HFUSE, extended=0x$EFUSE) for $CHIP using $PROGRAMMER..."
-  avrdude -p $CHIP -c $PROGRAMMER -U lfuse:w:0x$LFUSE:m -U hfuse:w:0x$HFUSE:m -U efuse:w:0x$EFUSE:m || { echo "Fuse setting failed"; exit 1; }
+  avrdude -p $CHIP -c $PROGRAMMER -U lfuse:w:0x$LFUSE:m -U hfuse:w:0x$HFUSE:m -U efuse:w:0x$EFUSE:m || { echo "Fuse setting failed."; exit 1; }
 fi
 
 echo "Operation complete."
