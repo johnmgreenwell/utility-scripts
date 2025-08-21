@@ -9,8 +9,14 @@ for device in /sys/bus/usb/devices/*/power/wakeup; do
         dev_path=$(dirname "$device")
         dev_name=$(basename "$dev_path")
         wake_setting=$(cat "$device")
-        echo "Device: $dev_name - Wakeup: $wake_setting"
+        # Skip USB hubs (bDeviceClass == 09)
+        [[ -f "$dev_path/bDeviceClass" ]] && [[ $(cat "$dev_path/bDeviceClass") == "09" ]] && continue
+        product="Unknown"
+        [[ -f "$dev_path/product" ]] && product=$(cat "$dev_path/product")
+        echo "Device: $dev_name ($product) - Wakeup: $wake_setting"
     fi
 done
+
+printf "Operation completed.\r\n"
 
 # EOF
