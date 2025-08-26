@@ -3,15 +3,16 @@
 # Usage: ./quick-scp.sh <input_file> <destination_ip> [destination_user]
 
 [ $# -lt 2 ] && { echo "Usage: $0 <input_file> <destination_ip> [destination_user]"; exit 1; }
+command -v scp >/dev/null 2>&1 || { echo "Command 'scp' not found."; exit 3; }
 
 INPUT_FILE="$1"
 DEST_IP="$2"
 DEST_USER="${3:-$USER}"
 
 # Validate inputs
-[ ! -f "$INPUT_FILE" ] && { echo "Error: File '$INPUT_FILE' does not exist."; exit 1; }
+[ ! -f "$INPUT_FILE" ] && { echo "Error: File '$INPUT_FILE' does not exist."; exit 2; }
 if ! [[ "$DEST_IP" =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ || "$DEST_IP" =~ ^[a-zA-Z0-9.-]+$ ]]; then
-    echo "Error: '$DEST_IP' does not appear to be a valid IP address or hostname"
+    echo "Error: '$DEST_IP' does not appear to be a valid IP address or hostname."
     exit 1
 fi
 
