@@ -19,10 +19,10 @@ DEVICE_NUM=$2
 DEVICE_NAME=$3
 
 DEVICE_PATH=$(lsusb -s "$BUS_NUM:$DEVICE_NUM" | awk '{print $6}')
-[ -z "$DEVICE_PATH" ] && { echo "Device $BUS_NUM:$DEVICE_NUM not found."; exit 1; }
+[ -z "$DEVICE_PATH" ] && { echo "Device $BUS_NUM:$DEVICE_NUM not found."; exit 4; }
 
 SYSFS_PATH=$(find /sys/bus/usb/devices/usb*/ -name "*$DEVICE_PATH")
-[ -z "$SYSFS_PATH" ] && { echo "Could not locate sysfs path for device $DEVICE_PATH."; exit 1; }
+[ -z "$SYSFS_PATH" ] && { echo "Could not locate sysfs path for device $DEVICE_PATH."; exit 2; }
 
 ID_VENDOR=$(udevadm info -a -p "$SYSFS_PATH" | grep -m1 "ATTRS{idVendor}" | awk -F'==' '{print $2}' | tr -d '" ')
 ID_PRODUCT=$(udevadm info -a -p "$SYSFS_PATH" | grep -m1 "ATTRS{idProduct}" | awk -F'==' '{print $2}' | tr -d '" ')
@@ -36,6 +36,8 @@ sudo udevadm control --reload-rules
 sudo udevadm trigger
 echo "Udev rule added. Device accessible at /dev/$DEVICE_NAME."
 
-[ -e "/dev/$DEVICE_NAME" ] && echo "/dev/$DEVICE_NAME successfully created!" || echo "/dev/$DEVICE_NAME not yet created. Please check device and try again."
+[ -e "/dev/$DEVICE_NAME" ] && { echo "/dev/$DEVICE_NAME successfully created!"; } || { echo "/dev/$DEVICE_NAME not yet created. Please check device and try again."; exit 3; }
+
+exit 0
 
 # EOF
