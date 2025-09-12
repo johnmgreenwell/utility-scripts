@@ -14,12 +14,6 @@ else
   sudo adduser xrdp ssl-cert
 fi
 
-if which xrdp >/dev/null 2>&2; then
-  sudo ufw allow 3389
-  exit 0
-else
-  echo "Failed to install XRDP."
-  exit 1
-fi
+which xrdp >/dev/null 2>&2 && { sudo ufw allow 3389; exit 0; } || { echo "Failed to install XRDP."; exit 1; }
 
 # EOF
