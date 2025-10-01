@@ -2,12 +2,12 @@
 # Install and setup xrdp
 # Usage: rdp-init.sh
 
-if which xrdp >/dev/null 2>&2; then
+if which xrdp >/dev/null 2>&1; then
   echo "XRDP is already installed."
 else
   echo "Installing XRDP."
-  sudo apt update
-  sudo apt install xrdp -y
+  sudo apt update || { echo "Failed to update. Exiting..."; exit 1; }
+  sudo apt install xrdp -y || { echo "Failed to install xrdp."; exit 1; }
   sudo systemctl enable xrdp
   sudo systemctl start xrdp
   echo "gnome-session" > ~/.xsession
