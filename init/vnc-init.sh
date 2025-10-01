@@ -10,8 +10,9 @@ if which tigervncserver >/dev/null 2>&1; then
   exit 0
 else
   echo "Installing VNC server."
-  sudo apt install ubuntu-gnome-desktop -y
-  sudo apt install tigervnc-standalone-server -y
+  sudo apt update || { echo "Failed to update. Exiting..."; exit 1; }
+  sudo apt install ubuntu-gnome-desktop -y || { echo "Failed to install ubuntu-gnome-desktop."; exit 1; }
+  sudo apt install tigervnc-standalone-server -y || { echo "Failed to install tigervnc-standalone-server."; exit 1; }
 fi
 
 echo "Updating vncserver init.d file with custom settings."
