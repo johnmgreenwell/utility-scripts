@@ -2,7 +2,7 @@
 # Install, clone and copy in new vimrc file to set up vim
 # Usage: vim-init.sh
 
-if ! which git >/dev/null 2>&2; then
+if ! which git >/dev/null 2>&1; then
   echo "Installing git."
   sudo apt install git -y
 fi
@@ -12,7 +12,8 @@ if which vim >/dev/null 2>&1; then
   exit 0
 else
   echo "Installing vim."
-  sudo apt install vim -y
+  sudo apt update || { echo "Failed to update. Exiting..."; exit 1; }
+  sudo apt install vim -y || { echo "Failed to install vim."; exit 1; }
 fi
 
 # Bring in very useful pre-made template
