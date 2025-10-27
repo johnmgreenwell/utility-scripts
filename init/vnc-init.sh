@@ -5,6 +5,8 @@
 
 USERNAME=${1:-"root"}
 
+[ $(id -u) -ne 0 ] && { echo "This script requires admin privileges."; exit 1; }
+
 if which tigervncserver >/dev/null 2>&1; then
   echo "VNC server is already installed."
   exit 0
