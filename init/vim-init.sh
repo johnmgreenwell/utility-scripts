@@ -2,9 +2,11 @@
 # Install, clone and copy in new vimrc file to set up vim
 # Usage: vim-init.sh
 
+[ $(id -u) -ne 0 ] && { echo "This script requires admin privileges."; exit 1; }
+
 if ! which git >/dev/null 2>&1; then
   echo "Installing git."
-  sudo apt install git -y
+  sudo apt install git -y || { echo "Failed to install git."; exit 1; }
 fi
 
 if which vim >/dev/null 2>&1; then
