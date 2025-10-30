@@ -2,6 +2,8 @@
 # Install tmux and prepare tmux conf file
 # Usage: tmux-init.sh
 
+[ $(id -u) -ne 0 ] && { echo "This script requires admin privileges."; exit 1; }
+
 if ! which git >/dev/null 2>&1; then
   echo "Installing git."
   sudo apt install git -y || { echo "Failed to install git."; exit 1; }
