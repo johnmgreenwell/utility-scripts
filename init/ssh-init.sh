@@ -2,6 +2,8 @@
 # Install openssh clinet and server and allow it through the firewall
 # Usage: ssh-init.sh
 
+[ $(id -u) -ne 0 ] && { echo "This script requires admin privileges."; exit 1; }
+
 if which ssh >/dev/null 2>&1; then
   echo "OpenSSH is already installed."
 else
