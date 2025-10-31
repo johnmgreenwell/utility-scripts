@@ -2,9 +2,12 @@
 # Install samba server and prepare its configuration and auto-start
 # to a directory called 'shared/' in MOUNT_DIRECTORY
 # Usage: ./samba-init.sh [USERNAME] [MOUNT_DIRECTORY] <DEVICE_FILE>
+
 USER="${1:-pi}"
 MOUNT="${2:-/mnt/hdd1}"
 DEVICE="$3"
+
+[ $(id -u) -ne 0 ] && { echo "This script requires admin privileges."; exit 1; }
 
 if which samba >/dev/null 2>&1; then
   echo "Samba is already installed."
@@ -29,15 +32,15 @@ if [ -n "$DEVICE" ]; then
     sudo chmod +x /etc/rc.local
   fi
   echo "sudo mount \"$DEVICE\" \"$MOUNT\"" | sudo tee -a /etc/rc.local > /dev/null
-  # Mount the drive
   sudo mount "$DEVICE" "$MOUNT"
 fi
 
-# Setup a user/password to access the samba share
+# Setup user/password to access the samba share and start it
 sudo smbpasswd -a "$USER"
-
-# Start the server
 sudo systemctl restart smbd.service nmbd.service
+
+echo "Samba setup complete."
+
 exit 0
 
 # EOF
