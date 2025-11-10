@@ -4,13 +4,7 @@
 
 UDEV_RULES_DIRS="/etc/udev/rules.d /lib/udev/rules.d /usr/lib/udev/rules.d"
 
-check_priv() {
-    if [ "$EUID" -ne 0 ]; then
-        echo "This script requires root privileges to access some udev rules."
-        echo "Please run with sudo or as root."
-        exit 1
-    fi
-}
+[ $(id -u) -ne 0 ] && { echo "This script requires admin privileges."; exit 1; }
 
 check_dir() {
     local dir=$1
@@ -44,7 +38,6 @@ list_udev_rules() {
     done
 }
 
-check_priv
 list_udev_rules
 if [ -z "$(find $UDEV_RULES_DIRS -type f -name "*.rules" 2>/dev/null)" ]; then
     echo "No udev rules found in the specified directories."
