@@ -17,6 +17,6 @@ for device in /sys/bus/usb/devices/*/power/wakeup; do
     fi
 done
 
-printf "Operation completed.\r\n"
+printf "USB wakeup check completed.\r\n"
 
 # EOF
