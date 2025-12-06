@@ -5,7 +5,7 @@
 
 [ $(id -u) -ne 0 ] && { echo "This script requires admin privileges."; exit 1; }
 
-type systemctl &> /dev/null || { echo "Error: systemctl not found. This script requires systemd."; exit 1; }
+type systemctl &> /dev/null || { echo "Error: systemctl not found. This script requires systemd."; exit 2; }
 
 if [ -z "$1" ]; then
     total=$(sudo systemctl list-units --type=service --state=running --no-pager | grep -c '.service')
