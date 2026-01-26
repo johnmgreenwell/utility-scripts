@@ -4,7 +4,6 @@
 
 command -v mpstat >/dev/null 2>&1 && { mpstat 1 1 | awk '/Average/ {print 100 - $NF}'; exit 0; }
 echo $(top -bn2 | grep "Cpu(s)" | tail -1 | awk '{print 100 - $8}')
-#echo "$(top -bn2 | grep "Cpu(s)" | tail -1 | awk '{printf "%.1f", 100 - $8}')%"
 
 exit 0
 
