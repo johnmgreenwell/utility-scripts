@@ -17,7 +17,13 @@ if [[ -n $1 ]]; then
   fi
 else
   echo "Checking status of tailscale..."
-  echo "Tailscale is status: $(systemctl is-active tailscaled)."
+  STATUS=$(systemctl is-active <service_name>)
+  if [ "$STATUS" = "active" ]; then
+      TIMESTAMP=$(systemctl show <service_name> --property=ActiveEnterTimestamp --value)
+  else
+      TIMESTAMP=$(systemctl show <service_name> --property=InactiveEnterTimestamp --value)
+  fi
+  echo "Tailscale: $STATUS since $TIMESTAMP."
   echo "Usage: $0 [start|stop]"
 fi
 
