@@ -16,9 +16,11 @@ if [[ -n $1 ]]; then
     exit 4
   fi
 else
-  echo "No argument provided."
+  echo "Checking status of tailscale..."
+  sudo systemctl status tailscaled
   echo "Usage: $0 [start|stop]"
-  exit 5
 fi
+
+exit 0
 
 # EOF
