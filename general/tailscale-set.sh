@@ -17,7 +17,7 @@ if [[ -n $1 ]]; then
   fi
 else
   echo "Checking status of tailscale..."
-  sudo systemctl status tailscaled | cat
+  echo "Tailscale is status: $(systemctl is-active tailscaled)."
   echo "Usage: $0 [start|stop]"
 fi
 
