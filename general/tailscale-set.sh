@@ -7,22 +7,28 @@
 command -v systemctl >/dev/null 2>&1 || { echo "Command 'systemctl' not found."; exit 3; }
 systemctl cat tailscaled &>/dev/null || { echo "Service 'tailscaled' not found."; exit 4; }
 
-if [[ $1 == "start" ]]; then
-  sudo systemctl start tailscaled
-elif [[ $1 == "stop" ]]; then
-  sudo systemctl stop tailscaled
-elif [[ $1 == "status" ]]
-  STATUS=$(systemctl is-active tailscaled)
-  if [ "$STATUS" = "active" ]; then
-    TIMESTAMP=$(systemctl show tailscaled --property=ActiveEnterTimestamp --value)
-  else
-    TIMESTAMP=$(systemctl show tailscaled --property=InactiveEnterTimestamp --value)
-  fi
-  echo "Tailscale: $STATUS since $TIMESTAMP."
-else
-  echo "Invalid argument."
-  exit 4
-fi
+case "$1" in
+  start)
+    sudo systemctl start tailscaled
+    ;;
+  stop)
+    sudo systemctl stop tailscaled
+    ;;
+  status)
+    STATUS=$(systemctl is-active tailscaled 2>/dev/null || echo "unknown")
+    if [ "$STATUS" = "active" ]; then
+      TIMESTAMP=$(systemctl show tailscaled --property=ActiveEnterTimestamp --value)
+    else
+      TIMESTAMP=$(systemctl show tailscaled --property=InactiveEnterTimestamp --value)
+    fi
+    echo "Tailscale: $STATUS since $TIMESTAMP."
+    ;;
+  *)
+    echo "Invalid command: $1"
+    echo "Usage: $0 {start|stop|status}"
+    exit 5
+    ;;
+esac
 
 exit 0
 
