@@ -17,11 +17,13 @@ case "$1" in
   status)
     STATUS=$(systemctl is-active tailscaled 2>/dev/null || echo "unknown")
     if [ "$STATUS" = "active" ]; then
+      COLOR="\e[32m"
       TIMESTAMP=$(systemctl show tailscaled --property=ActiveEnterTimestamp --value)
     else
+      COLOR="\e[31m"
       TIMESTAMP=$(systemctl show tailscaled --property=InactiveEnterTimestamp --value)
     fi
-    echo "Tailscale: $STATUS since $TIMESTAMP."
+    echo -e "Tailscale: ${COLOR}${STATUS} since ${TIMESTAMP}."    
     ;;
   *)
     echo "Invalid command: $1"
