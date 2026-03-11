@@ -4,7 +4,6 @@
 # Usage: task-check.sh <SERVICE_NAME>
 
 [ $(id -u) -ne 0 ] && { echo "This script requires admin privileges."; exit 1; }
-
 type systemctl &> /dev/null || { echo "Error: systemctl not found. This script requires systemd."; exit 2; }
 
 if [ -z "$1" ]; then
@@ -13,22 +12,22 @@ if [ -z "$1" ]; then
     echo "----------------------------------------"
     sudo systemctl list-units --type=service --state=running --no-pager | awk '{print $1, $4}' | column -t
     echo -e "\nTotal running services: $total"
-    exit 0
-fi
-
-SERVICE="$1"
-
-if ! sudo systemctl is-active --quiet "$SERVICE"; then
-    echo "$(date): $SERVICE is not running. Restarting..." | sudo tee -a "/var/log/service_monitor.log"
-    sudo systemctl restart "$SERVICE"
-
-    if sudo systemctl is-active --quiet "$SERVICE"; then
-        echo "$(date): Successfully restarted $SERVICE" | sudo tee -a "/var/log/service_monitor.log"
-    else
-        echo "$(date): Failed to restart $SERVICE" | sudo tee -a "/var/log/service_monitor.log"
-    fi
 else
-    echo "$(date): $SERVICE is running." | sudo tee -a "/var/log/service_monitor.log"
+    SERVICE="$1"
+    if ! sudo systemctl is-active --quiet "$SERVICE"; then
+        echo "$(date): $SERVICE is not running. Restarting..." | sudo tee -a "/var/log/service_monitor.log"
+        sudo systemctl restart "$SERVICE"
+
+        if sudo systemctl is-active --quiet "$SERVICE"; then
+            echo "$(date): Successfully restarted $SERVICE" | sudo tee -a "/var/log/service_monitor.log"
+        else
+            echo "$(date): Failed to restart $SERVICE" | sudo tee -a "/var/log/service_monitor.log"
+        fi
+    else
+        echo "$(date): $SERVICE is running." | sudo tee -a "/var/log/service_monitor.log"
+    fi
 fi
+
+exit 0
 
 # EOF
