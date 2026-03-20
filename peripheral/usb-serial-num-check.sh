@@ -2,7 +2,7 @@
 # Check serial number of attached USB serial device
 # Usage: usb-serial-num-check.sh [SERIAL_DEVICE]
 
-SERIAL_DEVICE=$1
+SERIAL_DEVICE=${1:-"/dev/ttyACM0"}
 
 usage() {
   echo "Usage: $0 [SERIAL_DEVICE]"
@@ -10,18 +10,14 @@ usage() {
   echo "If no device is specified, /dev/ttyACM0 is checked as a default."
 }
 
-if [ -z "$SERIAL_DEVICE" ]; then
-  if [ -e "/dev/ttyACM0" ]; then
-    SERIAL_DEVICE="/dev/ttyACM0"
-  else
-    echo "No USB serial device supplied, and /dev/ttyACM0 not attached."
-    usage
-    exit 1
-  fi
+if [ ! -e $SERIAL_DEVICE ]; then
+  echo "No USB serial device supplied, and /dev/ttyACM0 not attached."
+  usage
+  exit 1
 fi
 
-if [ ! -c "$SERIAL_DEVICE" ] || [ ! -r "$SERIAL_DEVICE" ]; then
-  echo "Error with given serial device file."
+if [[ ! -c "$SERIAL_DEVICE" || ! -r "$SERIAL_DEVICE" ]]; then
+  echo "Error encountered attempting to read $SERIAL_DEVICE."
   usage
   exit 2
 fi
