@@ -16,6 +16,6 @@ else
   sudo systemctl start xrdp
 fi
 
-which xrdp >/dev/null 2>&2 && { sudo ufw allow 3389; exit 0; } || { echo "Failed to install XRDP."; exit 1; }
+which xrdp >/dev/null 2>&2 && { sudo ufw allow 3389; exit 0; } || { echo "Failed to install XRDP."; exit 2; }
 
 # EOF
