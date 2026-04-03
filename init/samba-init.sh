@@ -14,7 +14,7 @@ if which samba >/dev/null 2>&1; then
   exit 0
 else
   echo "Installing samba."
-  sudo apt install samba -y || { echo "Failed to install samba."; exit 1; }
+  sudo apt install samba -y || { echo "Failed to install samba."; exit 2; }
 fi
 
 sudo mkdir -p "$MOUNT/shared"
