@@ -8,8 +8,8 @@ if which ssh >/dev/null 2>&1; then
   echo "OpenSSH is already installed."
 else
   echo "Installing OpenSSH."
-  sudo apt update || { echo "Failed to update. Exiting..."; exit 1; }
-  sudo apt install openssh-client -y && sudo apt install openssh-server -y || { echo "Failed to install openssh."; exit 1; }
+  sudo apt update || { echo "Failed to update. Exiting..."; exit 2; }
+  sudo apt install openssh-client -y && sudo apt install openssh-server -y || { echo "Failed to install openssh."; exit 3; }
 fi
 
 sudo ufw allow ssh
