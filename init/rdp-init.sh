@@ -1,6 +1,8 @@
 #!/bin/bash
 # Install and setup xrdp
-# Usage: rdp-init.sh
+# Usage: rdp-init.sh <PORT_NUM>
+
+PORT_NUM="${1:-3389}"
 
 [ $(id -u) -ne 0 ] && { echo "This script requires admin privileges."; exit 1; }
 
@@ -16,6 +18,15 @@ else
   sudo systemctl start xrdp
 fi
 
-which xrdp >/dev/null 2>&2 && { sudo ufw allow 3389; exit 0; } || { echo "Failed to install XRDP."; exit 2; }
+if which xrdp >/dev/null 2>&2; then
+  echo "Setting RDP firewall port allowance to $PORT_NUM..."
+  sudo ufw allow $PORT_NUM
+  sudo systemctl restart ssh
+else
+  echo "Failed to install XRDP."
+  exit 2
+fi
+
+exit 0
 
 # EOF
