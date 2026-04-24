@@ -39,6 +39,10 @@ fi
 sudo smbpasswd -a "$USER"
 sudo systemctl restart smbd.service nmbd.service
 
+echo "Setting firewall port allowance for Samba..."
+sudo ufw allow 137,138/udp
+sudo ufw allow 139,445/tcp
+
 echo "Samba setup complete."
 
 exit 0
