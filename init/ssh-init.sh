@@ -19,7 +19,7 @@ sudo ufw delete allow 22/tcp
 sudo ufw allow $PORT_NUM/tcp
 sudo systemctl restart ssh
 
-Echo "Operation complete."
+echo "Operation complete."
 
 exit 0
 
