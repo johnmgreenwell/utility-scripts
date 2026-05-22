@@ -10,4 +10,6 @@ SECONDS=$(( $1 * 60 ))
 sleep "$SECONDS"
 sudo systemctl suspend
 
+exit 0
+
 # EOF

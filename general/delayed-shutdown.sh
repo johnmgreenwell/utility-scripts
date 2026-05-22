@@ -10,4 +10,6 @@ MINUTES=$1
 echo "System will shut down in $MINUTES minute(s)..."
 sudo shutdown -h +$MINUTES
 
+exit 0
+
 # EOF
