@@ -1,6 +1,6 @@
 #!/bin/bash
 # Install batch list of programs using apt package manager
-# Usage: batch-init.sh <APP_LIST>
+# Usage: batch-init.sh <APP_LIST_FILE>
 
 APP_LIST=$1
 
@@ -13,13 +13,19 @@ sudo apt update || { echo "Failed to update apt. Exiting..."; exit 4; }
 
 echo "Beginning batch application installation..."
 while IFS= read -r line; do
-  echo "$line"
-  if which "$line" >/dev/null 2>&1; then
-    echo "Application \"$line\" is already installed."
+  line=$(echo "$line" | tr -d '\r' | xargs)
+  if [[ "$line" =~ ^[a-zA-Z0-9]+$ ]]; then
+    if which "$line" >/dev/null 2>&1; then
+      echo "Application \"$line\" is already installed."
+    else
+      echo "Installing \"$line\"."
+      sudo apt install "$line" -y || { echo "Failed to install \"$line\"."; exit 5; }
+      echo "Installed \"$line\"."
+    fi
   else
-    echo "Installing \"$line\"."
-    sudo apt install "$line" -y || { echo "Failed to install \"$line\"."; exit 5; }
-fi
+    echo "Error: \"$line\" is not a single-word apt package name."
+	exit 6
+  fi
 done < "$APP_LIST"
 
 echo "Batch application installation complete."
