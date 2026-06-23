@@ -14,6 +14,7 @@ sudo apt update || { echo "Failed to update apt. Exiting..."; exit 4; }
 echo "Beginning batch application installation..."
 while IFS= read -r line; do
   line=$(echo "$line" | tr -d '\r' | xargs)
+  [[ -z "$line" ]] && continue
   if [[ "$line" =~ ^[a-zA-Z0-9]+$ ]]; then
     if which "$line" >/dev/null 2>&1; then
       echo "Application \"$line\" is already installed."
