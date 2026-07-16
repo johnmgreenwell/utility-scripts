@@ -15,7 +15,7 @@ echo "Beginning batch application installation..."
 while IFS= read -r line; do
   line=$(echo "$line" | tr -d '\r' | xargs)
   [[ -z "$line" ]] && continue
-  if [[ "$line" =~ ^[a-zA-Z0-9]+$ ]]; then
+  if [[ "$line" =~ ^[a-zA-Z0-9._+-]+$ ]]; then
     if which "$line" >/dev/null 2>&1; then
       echo "Application \"$line\" is already installed."
     else
