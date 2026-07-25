@@ -13,25 +13,29 @@ sudo apt update || { echo "Failed to update apt. Exiting..."; exit 4; }
 
 echo "Beginning batch application installation..."
 command -v dpkg >/dev/null 2>&1 || { echo "Error: Command 'dpkg' not found."; exit 5; }
+
+packages=()
 while IFS= read -r line; do
   line=$(echo "$line" | tr -d '\r' | xargs)
-  [[ -z "$line" ]] && continue
+  [[ -z "$line" || "$line" == \#* ]] && continue
   if [[ "$line" =~ ^[a-zA-Z0-9._+-]+$ ]]; then
-    if dpkg -s "$line" >/dev/null 2>&1; then
-      echo "Application \"$line\" is already installed."
+    if ! dpkg -s "$line" >/dev/null 2>&1; then
+      packages+=("$line")
     else
-      echo "Installing \"$line\"."
-      sudo apt install "$line" -y || { echo "Failed to install \"$line\"."; exit 6; }
-      echo "Installed \"$line\"."
+      echo "Application \"$line\" is already installed."
     fi
   else
     echo "Error: \"$line\" is not a single-word apt package name."
-	exit 6
+    exit 6
   fi
 done < "$APP_LIST"
 
-echo "Batch application installation complete."
+if [ ${#packages[@]} -gt 0 ]; then
+  echo "Installing packages: ${packages[*]}"
+  sudo apt install -y "${packages[@]}" || { echo "Failed to install packages."; exit 6; }
+fi
 
+echo "Batch application installation complete."
 exit 0
 
 # EOF
