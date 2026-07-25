@@ -12,15 +12,16 @@ echo "Updating apt..."
 sudo apt update || { echo "Failed to update apt. Exiting..."; exit 4; }
 
 echo "Beginning batch application installation..."
+command -v dpkg >/dev/null 2>&1 || { echo "Error: Command 'dpkg' not found."; exit 5; }
 while IFS= read -r line; do
   line=$(echo "$line" | tr -d '\r' | xargs)
   [[ -z "$line" ]] && continue
   if [[ "$line" =~ ^[a-zA-Z0-9._+-]+$ ]]; then
-    if which "$line" >/dev/null 2>&1; then
+    if dpkg -s "$line" >/dev/null 2>&1; then
       echo "Application \"$line\" is already installed."
     else
       echo "Installing \"$line\"."
-      sudo apt install "$line" -y || { echo "Failed to install \"$line\"."; exit 5; }
+      sudo apt install "$line" -y || { echo "Failed to install \"$line\"."; exit 6; }
       echo "Installed \"$line\"."
     fi
   else
