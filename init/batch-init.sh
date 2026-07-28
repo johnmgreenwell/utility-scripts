@@ -2,7 +2,7 @@
 # Install batch list of programs using apt package manager
 # Usage: batch-init.sh <APP_LIST_FILE>
 
-APP_LIST=$1
+APP_LIST="$1"
 
 [ $(id -u) -ne 0 ] && { echo "This script requires admin privileges."; exit 1; }
 [ "$#" -eq 1 ] || { echo "Usage: $0 [APP_LIST_FILE]"; exit 2; }
@@ -32,7 +32,7 @@ done < "$APP_LIST"
 
 if [ ${#packages[@]} -gt 0 ]; then
   echo "Installing packages: ${packages[*]}"
-  sudo apt install -y "${packages[@]}" || { echo "Failed to install packages."; exit 6; }
+  sudo apt install -y "${packages[@]}" || { echo "Failed to install packages."; exit 7; }
 fi
 
 echo "Batch application installation complete."
