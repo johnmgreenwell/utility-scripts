@@ -9,7 +9,7 @@ APP_LIST="$1"
 [[ ! -f "$APP_LIST" ]] && { echo "App list file \"$APP_LIST\" not found. Exiting..."; exit 3; }
 
 echo "Updating apt..."
-sudo apt update || { echo "Failed to update apt. Exiting..."; exit 4; }
+apt update -qq || { echo "Failed to update apt. Exiting..."; exit 4; }
 
 echo "Beginning batch application installation..."
 command -v dpkg >/dev/null 2>&1 || { echo "Error: Command 'dpkg' not found."; exit 5; }
@@ -32,7 +32,8 @@ done < "$APP_LIST"
 
 if [ ${#packages[@]} -gt 0 ]; then
   echo "Installing packages: ${packages[*]}"
-  sudo apt install -y "${packages[@]}" || { echo "Failed to install packages."; exit 7; }
+  export DEBIAN_FRONTEND=noninteractive # minimize chance of apt hanging on unexpected config
+  apt install -y --no-install-recommends "${packages[@]}" || { echo "Failed to install packages."; exit 7; }
 fi
 
 echo "Batch application installation complete."
