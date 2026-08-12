@@ -4,8 +4,8 @@
 
 APP_LIST="$1"
 
-[ $(id -u) -ne 0 ] && { echo "This script requires admin privileges."; exit 1; }
-[ "$#" -eq 1 ] || { echo "Usage: $0 [APP_LIST_FILE]"; exit 2; }
+[ "$#" -eq 1 ] || { echo "Usage: $0 <APP_LIST_FILE>"; exit 1; }
+[ $(id -u) -ne 0 ] && { echo "This script requires admin privileges."; exit 2; }
 [[ ! -f "$APP_LIST" ]] && { echo "App list file \"$APP_LIST\" not found. Exiting..."; exit 3; }
 
 echo "Updating apt..."
