@@ -8,8 +8,8 @@ APP_LIST="$1"
 [ $(id -u) -ne 0 ] && { echo "This script requires admin privileges."; exit 2; }
 [[ ! -f "$APP_LIST" ]] && { echo "App list file \"$APP_LIST\" not found. Exiting..."; exit 3; }
 
-echo "Updating apt..."
-apt update -qq || { echo "Failed to update apt. Exiting..."; exit 4; }
+echo "Updating apt package manager..."
+apt-get update -qq || { echo "Failed to update apt. Exiting..."; exit 4; }
 
 echo "Beginning batch application installation..."
 command -v dpkg >/dev/null 2>&1 || { echo "Error: Command 'dpkg' not found."; exit 5; }
@@ -32,8 +32,7 @@ done < "$APP_LIST"
 
 if [ ${#packages[@]} -gt 0 ]; then
   echo "Installing packages: ${packages[*]}"
-  export DEBIAN_FRONTEND=noninteractive # minimize chance of apt hanging on unexpected config
-  apt install -y --no-install-recommends "${packages[@]}" || { echo "Failed to install packages."; exit 7; }
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends "${packages[@]}" || { echo "Failed to install packages."; exit 7; }
 fi
 
 echo "Batch application installation complete."
