@@ -8,8 +8,8 @@ SSH_CONFIG_FILE="/etc/ssh/sshd_config"
 RDP_CONFIG_FILE="/etc/xrdp/xrdp.ini"
 
 [ $(id -u) -ne 0 ] && { echo "This script requires admin privileges."; exit 1; }
-[[ -z $SSH_PORT_NUM ]] && { echo "No SSH port number provided. Exiting..."; exit 2; }
-[[ -z $RDP_PORT_NUM ]] && { echo "No RDP port number provided. Exiting..."; exit 3; }
+[[ -z "$SSH_PORT_NUM" ]] && { echo "No SSH port number provided. Exiting..."; exit 2; }
+[[ -z "$RDP_PORT_NUM" ]] && { echo "No RDP port number provided. Exiting..."; exit 3; }
 [[ ! -f "$SSH_CONFIG_FILE" ]] && { echo "SSH config file \"$SSH_CONFIG_FILE\" not found. Exiting..."; exit 4; }
 [[ ! -f "$RDP_CONFIG_FILE" ]] && { echo "RDP config file \"$RDP_CONFIG_FILE\" not found. Exiting..."; exit 5; }
 
@@ -30,12 +30,12 @@ sed -i.bak "s/^port=.*/port=$RDP_PORT_NUM/" "$RDP_CONFIG_FILE"
 
 # Set firewall rules
 echo "Setting SSH firewall port allowance to $SSH_PORT_NUM..."
-sudo ufw delete allow 22/tcp
-sudo ufw allow $SSH_PORT_NUM/tcp
+ufw delete allow 22/tcp
+ufw allow "$SSH_PORT_NUM/tcp"
 echo "Setting RDP firewall port allowance to $RDP_PORT_NUM..."
-sudo ufw delete allow 3389/tcp
-sudo ufw allow $RDP_PORT_NUM/tcp
-sudo ufw reload
+ufw delete allow 3389/tcp
+ufw allow "$RDP_PORT_NUM/tcp"
+ufw reload
 
 echo "Operation completed. It may be necessary to restart the ssh/rdp services."
 
