@@ -25,8 +25,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
       echo "Application \"$line\" is already installed."
     fi
   else
-    echo "Error: \"$line\" is not a valid apt package name."
-    exit 6
+    { echo "Error: \"$line\" is not a valid apt package name."; exit 6; }
   fi
 done < "$APP_LIST"
 
