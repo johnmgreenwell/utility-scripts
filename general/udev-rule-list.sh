@@ -16,9 +16,7 @@ check_dir() {
 }
 
 list_udev_rules() {
-    echo "Listing udev rules related to external devices..."
-    echo "-----------------------------------------------"
-
+    printf "Listing udev rules related to external devices...\r\n\r\n"
     for dir in "${UDEV_RULES_DIRS[@]}"; do
         if check_dir "$dir"; then
             echo "Checking directory: $dir"
@@ -27,7 +25,7 @@ list_udev_rules() {
                     echo "File: $rule_file"
                     echo "Contents:"
                     grep -Ei 'SUBSYSTEM=="(usb|block|scsi|hid|input)"|KERNEL=="(sd[a-z]|hid|ttyUSB)"' "$rule_file" | sed 's/^/  /'
-                    echo "-----------------------------------------------"
+                    printf "\r\n"
                 fi
             done
         else
