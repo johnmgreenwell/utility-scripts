@@ -10,8 +10,8 @@ if which xrdp >/dev/null 2>&1; then
   echo "XRDP is already installed."
 else
   echo "Installing XRDP."
-  sudo apt update || { echo "Failed to update. Exiting..."; exit 1; }
-  sudo apt install xrdp -y || { echo "Failed to install xrdp."; exit 1; }
+  sudo apt update || { echo "Failed to update. Exiting..."; exit 2; }
+  sudo apt install xrdp -y || { echo "Failed to install xrdp."; exit 3; }
   echo "gnome-session" > ~/.xsession
   sudo adduser xrdp ssl-cert
   sudo systemctl enable xrdp
