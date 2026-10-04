@@ -70,15 +70,15 @@ fi
 
 if $FLASH_BIN; then
   echo "Flashing $TARGET_BIN to $CHIP using $PROGRAMMER..."
-  avrdude -p $CHIP -c $PROGRAMMER -U flash:w:$TARGET_BIN || { echo "Flashing failed."; exit 1; }
+  avrdude -p $CHIP -c $PROGRAMMER -U flash:w:$TARGET_BIN || { echo "Flashing failed."; exit 2; }
 fi
 if $FLASH_EEP; then
   echo "Writing $TARGET_EEP to $CHIP using $PROGRAMMER..."
-  avrdude -p $CHIP -c $PROGRAMMER -U eeprom:w:$TARGET_EEP || { echo "EEPROM write failed."; exit 1; }
+  avrdude -p $CHIP -c $PROGRAMMER -U eeprom:w:$TARGET_EEP || { echo "EEPROM write failed."; exit 3; }
 fi
 if $FLASH_FUSES; then
   echo "Setting fuses (low=0x$LFUSE, high=0x$HFUSE, extended=0x$EFUSE) for $CHIP using $PROGRAMMER..."
-  avrdude -p $CHIP -c $PROGRAMMER -U lfuse:w:0x$LFUSE:m -U hfuse:w:0x$HFUSE:m -U efuse:w:0x$EFUSE:m || { echo "Fuse setting failed."; exit 1; }
+  avrdude -p $CHIP -c $PROGRAMMER -U lfuse:w:0x$LFUSE:m -U hfuse:w:0x$HFUSE:m -U efuse:w:0x$EFUSE:m || { echo "Fuse setting failed."; exit 4; }
 fi
 
 echo "Operation complete."
