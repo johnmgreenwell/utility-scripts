@@ -14,34 +14,34 @@ if which samba >/dev/null 2>&1; then
   exit 0
 else
   echo "Installing samba."
-  sudo apt install samba -y || { echo "Failed to install samba."; exit 2; }
+  apt install samba -y || { echo "Failed to install samba."; exit 2; }
 fi
 
-sudo mkdir -p "$MOUNT/shared"
+mkdir -p "$MOUNT/shared"
 echo "Updating smb.conf file with custom settings..."
 read -r -d '' SETUP << EOM
 # Place custom server details here
 # https://ubuntu.com/tutorials/install-and-configure-samba#3-setting-up-samba
 EOM
-echo "$SETUP" | sudo tee -a /etc/samba/smb.conf > /dev/null
+echo "$SETUP" | tee -a /etc/samba/smb.conf > /dev/null
 
 if [ -n "$DEVICE" ]; then
   echo "Adding auto-mount on start..."
   if [ ! -f /etc/rc.local ]; then
-    echo "#!/bin/bash" | sudo tee /etc/rc.local > /dev/null
-    sudo chmod +x /etc/rc.local
+    echo "#!/bin/bash" | tee /etc/rc.local > /dev/null
+    chmod +x /etc/rc.local
   fi
-  echo "sudo mount \"$DEVICE\" \"$MOUNT\"" | sudo tee -a /etc/rc.local > /dev/null
-  sudo mount "$DEVICE" "$MOUNT"
+  echo "sudo mount \"$DEVICE\" \"$MOUNT\"" | tee -a /etc/rc.local > /dev/null
+  mount "$DEVICE" "$MOUNT"
 fi
 
 # Setup user/password to access the samba share and start it
-sudo smbpasswd -a "$USER"
-sudo systemctl restart smbd.service nmbd.service
+smbpasswd -a "$USER"
+systemctl restart smbd.service nmbd.service
 
 echo "Setting firewall port allowance for Samba..."
-sudo ufw allow 137,138/udp
-sudo ufw allow 139,445/tcp
+ufw allow 137,138/udp
+ufw allow 139,445/tcp
 
 echo "Samba setup complete."
 
