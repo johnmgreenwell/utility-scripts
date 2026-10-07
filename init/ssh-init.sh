@@ -10,14 +10,14 @@ if which ssh >/dev/null 2>&1; then
   echo "OpenSSH is already installed."
 else
   echo "Installing OpenSSH."
-  sudo apt update || { echo "Failed to update. Exiting..."; exit 2; }
-  sudo apt install openssh-client -y && sudo apt install openssh-server -y || { echo "Failed to install openssh."; exit 3; }
+  apt update || { echo "Failed to update. Exiting..."; exit 2; }
+  apt install openssh-client -y && apt install openssh-server -y || { echo "Failed to install openssh."; exit 3; }
 fi
 
 echo "Setting SSH firewall port allowance to $PORT_NUM..."
-sudo ufw delete allow 22/tcp
-sudo ufw allow $PORT_NUM/tcp
-sudo systemctl restart ssh
+ufw delete allow 22/tcp
+ufw allow $PORT_NUM/tcp
+systemctl restart ssh
 
 echo "Operation complete."
 
