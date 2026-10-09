@@ -6,7 +6,7 @@
 
 if ! which git >/dev/null 2>&1; then
   echo "Installing git."
-  apt install git -y || { echo "Failed to install git."; exit 1; }
+  apt install git -y || { echo "Failed to install git."; exit 2; }
 fi
 
 if which tmux >/dev/null 2>&1; then
@@ -14,8 +14,8 @@ if which tmux >/dev/null 2>&1; then
   exit 0
 else
   echo "Installing tmux."
-  apt update || { echo "Failed to update. Exiting..."; exit 1; }
-  apt install tmux -y || { echo "Failed to install tmux."; exit 1; }
+  apt update || { echo "Failed to update. Exiting..."; exit 3; }
+  apt install tmux -y || { echo "Failed to install tmux."; exit 4; }
 fi
 
 echo "Updating tmux.conf file with custom settings."
