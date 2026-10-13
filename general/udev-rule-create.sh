@@ -27,8 +27,8 @@ echo "Using $RULE_FILE..."
 echo "Creating udev rule..."
 echo "SUBSYSTEM==\"usb\", ATTR{idVendor}==\"$ID_VENDOR\", ATTR{idProduct}==\"$ID_PRODUCT\", ATTR{serial}==\"$SERIAL\", SYMLINK+=\"${DEVICE_NAME}\"" | sudo tee -a "$RULE_FILE" > /dev/null
 echo "Reloading udev rules..."
-sudo udevadm control --reload-rules
-sudo udevadm trigger
+udevadm control --reload-rules
+udevadm trigger
 echo "Udev rule added. Device accessible at /dev/$DEVICE_NAME."
 
 [ -e "/dev/$DEVICE_NAME" ] && { echo "/dev/$DEVICE_NAME successfully created!"; } || { echo "/dev/$DEVICE_NAME not yet created. Please check device and try again."; exit 5; }
