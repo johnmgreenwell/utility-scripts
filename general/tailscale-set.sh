@@ -9,10 +9,10 @@ systemctl cat tailscaled &>/dev/null || { echo "Service 'tailscaled' not found."
 
 case "$1" in
   start)
-    sudo systemctl start tailscaled
+    systemctl start tailscaled
     ;;
   stop)
-    sudo systemctl stop tailscaled
+    systemctl stop tailscaled
     ;;
   status)
     STATUS=$(systemctl is-active tailscaled 2>/dev/null || echo "unknown")
