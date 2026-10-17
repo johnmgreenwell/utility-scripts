@@ -4,9 +4,9 @@
 
 [ $(id -u) -ne 0 ] && { echo "This script requires admin privileges."; exit 1; }
 
-sudo sed -i '/dtoverlay=disable-bt/d' /boot/firmware/config.txt
-sudo systemctl unmask bluetooth
-sudo systemctl enable bluetooth
+sed -i '/dtoverlay=disable-bt/d' /boot/firmware/config.txt
+systemctl unmask bluetooth
+systemctl enable bluetooth
 
 echo "Bluetooth disabled. Restart may be required."
 
