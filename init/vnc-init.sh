@@ -12,9 +12,9 @@ if which tigervncserver >/dev/null 2>&1; then
   exit 0
 else
   echo "Installing VNC server."
-  sudo apt update || { echo "Failed to update. Exiting..."; exit 1; }
-  sudo apt install ubuntu-gnome-desktop -y || { echo "Failed to install ubuntu-gnome-desktop."; exit 1; }
-  sudo apt install tigervnc-standalone-server -y || { echo "Failed to install tigervnc-standalone-server."; exit 1; }
+  apt update || { echo "Failed to update. Exiting..."; exit 1; }
+  apt install ubuntu-gnome-desktop -y || { echo "Failed to install ubuntu-gnome-desktop."; exit 1; }
+  apt install tigervnc-standalone-server -y || { echo "Failed to install tigervnc-standalone-server."; exit 1; }
 fi
 
 echo "Updating vncserver init.d file with custom settings."
@@ -45,14 +45,14 @@ ExecStop=/usr/bin/vncserver -kill :%i
 WantedBy=multi-user.target
 EOM
 
-echo "$SERVICE" | sudo tee '/etc/systemd/system/vncserver.service' > /dev/null
+echo "$SERVICE" | tee '/etc/systemd/system/vncserver.service' > /dev/null
 
 echo "Adding auto-mount on start..."
-sudo systemctl enable vncserver.service
-sudo systemctl daemon-reload 
+systemctl enable vncserver.service
+systemctl daemon-reload
 
 echo "Performing initial launch for password entry..."
-sudo tigervncserver -xstartup /usr/bin/gnome-session -geometry 1920x1080 -localhost no
+tigervncserver -xstartup /usr/bin/gnome-session -geometry 1920x1080 -localhost no
 
 exit 0
 
