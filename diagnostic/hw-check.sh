@@ -40,7 +40,7 @@ lsusb
 
 # DMI/BIOS Information
 echo -e "\n>>> BIOS and Manufacturer Information:"
-sudo dmidecode -t system
+dmidecode -t system
 
 # Kernel and OS Information
 echo -e "\n>>> OS and Kernel Information:"
