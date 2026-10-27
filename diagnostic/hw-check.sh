@@ -2,11 +2,7 @@
 # Report platform hardware info
 # Usage: hw-check.sh
 
-if [ "$EUID" -ne 0 ]; then
-    echo "This script requires root privileges to access some udev rules."
-    echo "Please run with sudo or as root."
-    exit 1
-fi
+[ $(id -u) -ne 0 ] && { echo "This script requires admin privileges."; exit 1; }
 
 echo "==== SYSTEM HARDWARE INFORMATION ===="
 
