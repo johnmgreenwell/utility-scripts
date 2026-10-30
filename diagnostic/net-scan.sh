@@ -9,21 +9,21 @@ OUTPUT_FORMAT="text"
 LOGFILE="net-scan-$(date +%F_%H-%M-%S).log"
 
 command -v ping >/dev/null 2>&1 || { echo "Error: ping is not installed."; exit 1; }
-command -v nslookup >/dev/null 2>&1 || { echo "Error: nslookup is not installed."; exit 1; }
+command -v nslookup >/dev/null 2>&1 || { echo "Error: nslookup is not installed."; exit 2; }
 
 while getopts "vn:f:" opt; do
     case $opt in
         v) VERBOSE=1 ;;
         n) NETWORK="$OPTARG" ;;
         f) OUTPUT_FORMAT="$OPTARG" ;;
-        *) echo "Usage: $0 [-v] [-n network] [-f text|json]"; exit 1 ;;
+        *) echo "Usage: $0 [-v] [-n network] [-f text|json]"; exit 3 ;;
     esac
 done
 
 # Validation
 if ! echo "$NETWORK" | grep -E '^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/[0-9]{1,2}$' >/dev/null; then
     echo "Error: Invalid network range. Use CIDR notation (e.g., 192.168.1.0/24)."
-    exit 1
+    exit 4
 fi
 
 # Get hostname with fallback
@@ -44,7 +44,7 @@ if command -v arp-scan >/dev/null 2>&1 && [[ $EUID -eq 0 ]]; then
     if [[ $VERBOSE -eq 1 ]]; then
         echo "Using arp-scan for detecting machines..." | tee -a "$LOGFILE"
     fi
-    sudo arp-scan --localnet --quiet --ignoredups | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | while read -r ip mac _; do
+    arp-scan --localnet --quiet --ignoredups | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | while read -r ip mac _; do
         hostname=$(get_hostname "$ip")
         if [[ "$OUTPUT_FORMAT" == "json" ]]; then
             echo "{\"ip\": \"$ip\", \"hostname\": \"$hostname\", \"mac\": \"$mac\", \"status\": \"UP\", \"timestamp\": \"$(date -Iseconds)\"}" | tee -a "$LOGFILE"
