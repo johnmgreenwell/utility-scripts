@@ -8,7 +8,7 @@
 
 SECONDS=$(( $1 * 60 ))
 sleep "$SECONDS"
-sudo systemctl suspend
+systemctl suspend
 
 exit 0
 
