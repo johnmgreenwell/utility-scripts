@@ -6,7 +6,7 @@
 
 if ! which git >/dev/null 2>&1; then
   echo "Installing git."
-  sudo apt install git -y || { echo "Failed to install git."; exit 1; }
+  apt install git -y || { echo "Failed to install git."; exit 1; }
 fi
 
 if which vim >/dev/null 2>&1; then
@@ -14,8 +14,8 @@ if which vim >/dev/null 2>&1; then
   exit 0
 else
   echo "Installing vim."
-  sudo apt update || { echo "Failed to update. Exiting..."; exit 1; }
-  sudo apt install vim -y || { echo "Failed to install vim."; exit 1; }
+  apt update || { echo "Failed to update. Exiting..."; exit 1; }
+  apt install vim -y || { echo "Failed to install vim."; exit 1; }
 fi
 
 # Bring in very useful pre-made template
